@@ -1,21 +1,18 @@
 package org.p2p.solanaj.rpc;
 
+import java.math.BigInteger;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
+import com.squareup.moshi.JsonAdapter;
 import org.p2p.solanaj.core.Account;
 import org.p2p.solanaj.core.PublicKey;
 import org.p2p.solanaj.core.Transaction;
+import org.p2p.solanaj.rpc.types.*;
 import org.p2p.solanaj.rpc.types.ConfigObjects.*;
-import org.p2p.solanaj.rpc.types.AccountInfo;
-import org.p2p.solanaj.rpc.types.ConfirmedTransaction;
-import org.p2p.solanaj.rpc.types.ProgramAccount;
-import org.p2p.solanaj.rpc.types.RecentBlockhash;
-import org.p2p.solanaj.rpc.types.RpcSendTransactionConfig;
-import org.p2p.solanaj.rpc.types.SignatureInformation;
 import org.p2p.solanaj.rpc.types.RpcResultTypes.ValueLong;
 import org.p2p.solanaj.rpc.types.RpcSendTransactionConfig.Encoding;
 import org.p2p.solanaj.ws.SubscriptionWebSocketClient;
@@ -26,6 +23,18 @@ public class RpcApi {
 
     public RpcApi(RpcClient client) {
         this.client = client;
+    }
+
+    public BigInteger getBlockHeight() throws RpcException{
+        Long block = client.call("getBlockHeight", null, Long.class);
+        System.out.println(block);
+        return new BigInteger(String.valueOf(block.longValue()));
+    }
+
+    public void getBlock() throws RpcException{
+        List<Object> params = new ArrayList<>();
+        params.add(new Integer(124426626));
+        client.call("getBlock",params,)
     }
 
     public String getRecentBlockhash() throws RpcException {
