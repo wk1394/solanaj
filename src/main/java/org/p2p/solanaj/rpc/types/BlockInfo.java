@@ -6,24 +6,14 @@ import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-public class BlockInfo extends RpcResultObject{
-
-    public static class Transaction{
-
-    }
-
-    @Json(name = "blockHeight")
-    public BigInteger blockHeight;
-
+public class BlockInfo{
     @Json(name = "blockhash")
     public String blockhash;
 
-    @Json(name = "parentSlot")
-    public BigInteger parentSlot;
+    public String getBlockHash() {
+        return blockhash;
+    }
 
-    @Json(name = "previousBlockhash")
-    public String previousBlockhash;
-
-    @Json(name = "transactions")
-    public ArrayList<Transaction> transactions;
+    //    @Json(name = "transactions")
+//    public ArrayList<Transaction> transactions;
 }

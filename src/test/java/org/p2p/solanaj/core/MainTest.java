@@ -1,5 +1,6 @@
 package org.p2p.solanaj.core;
 
+import org.bitcoinj.core.Base58;
 import org.junit.Test;
 import org.p2p.solanaj.rpc.Cluster;
 import org.p2p.solanaj.rpc.RpcClient;
@@ -18,26 +19,17 @@ public class MainTest {
         Account acc = Account.fromMnemonic(Arrays.asList("spider", "federal", "bleak", "unable", "ask", "weasel",
                 "diamond", "electric", "illness", "wheat", "uphold", "mind"), "");
         String myAddress = acc.getPublicKey().toBase58();
+        String secretKey = Base58.encode(acc.getSecretKey());
         System.out.println("createAddress: address:"+myAddress);
+        System.out.println("createAddress: key:"+secretKey);
     }
 
-    @Test
-    public void scanBlock() {
-
-    }
-
-    @Test
-    public void sendTo(){
-
-    }
 
     @Test
     public void getBlock(){
         try {
             // Get account Info
             final RpcClient client = new RpcClient(Cluster.MAINNET);
-            final AccountInfo accountInfo = client.getApi().getAccountInfo(new PublicKey(myAddress));
-
             System.out.println("block height:"+client.getApi().getBlockHeight());
         } catch (RpcException e) {
             e.printStackTrace();

@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
+import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
 import org.p2p.solanaj.core.Account;
 import org.p2p.solanaj.core.PublicKey;
@@ -31,10 +33,17 @@ public class RpcApi {
         return new BigInteger(String.valueOf(block.longValue()));
     }
 
-    public void getBlock() throws RpcException{
+    public String getBlock() throws RpcException{
         List<Object> params = new ArrayList<>();
-        params.add(new Integer(124426626));
-        client.call("getBlock",params,)
+        params.add(137610257);
+        JSONObject encode = new JSONObject();
+        encode.put("encoding","json");
+        encode.put("transactionDetails","full");
+        encode.put("rewards",false);
+        params.add(encode);
+        String blockHeight = client.call("getBlock",params,BlockInfo.class).getBlockHash();
+        System.out.println(blockHeight);
+        return blockHeight;
     }
 
     public String getRecentBlockhash() throws RpcException {
