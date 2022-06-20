@@ -28,7 +28,7 @@ public class RpcApi {
     }
 
     public BigInteger getBlockHeight() throws RpcException{
-        Long block = client.call("getBlockHeight", null, Long.class);
+        Long block = client.call("getSlot", null, Long.class);
         System.out.println(block);
         return new BigInteger(String.valueOf(block.longValue()));
     }
