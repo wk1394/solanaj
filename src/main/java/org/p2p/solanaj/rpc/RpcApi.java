@@ -13,6 +13,7 @@ import com.squareup.moshi.JsonAdapter;
 import org.p2p.solanaj.core.Account;
 import org.p2p.solanaj.core.PublicKey;
 import org.p2p.solanaj.core.Transaction;
+import org.p2p.solanaj.core.block.BlockChain;
 import org.p2p.solanaj.rpc.types.*;
 import org.p2p.solanaj.rpc.types.ConfigObjects.*;
 import org.p2p.solanaj.rpc.types.RpcResultTypes.ValueLong;
@@ -33,17 +34,16 @@ public class RpcApi {
         return new BigInteger(String.valueOf(block.longValue()));
     }
 
-    public String getBlock() throws RpcException{
+    public BlockChain getBlock() throws RpcException{
         List<Object> params = new ArrayList<>();
-        params.add(137610257);
+        params.add(138243491);
         JSONObject encode = new JSONObject();
         encode.put("encoding","json");
         encode.put("transactionDetails","full");
         encode.put("rewards",false);
         params.add(encode);
-        String blockHeight = client.call("getBlock",params,BlockInfo.class).getBlockHash();
-        System.out.println(blockHeight);
-        return blockHeight;
+        BlockChain blockChain = client.call("getBlock",params, BlockChain.class);
+        return blockChain;
     }
 
     public String getRecentBlockhash() throws RpcException {

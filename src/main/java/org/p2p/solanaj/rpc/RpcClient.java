@@ -6,8 +6,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import com.squareup.moshi.JsonAdapter;
@@ -33,6 +36,17 @@ public class RpcClient {
         rpcApi = new RpcApi(this);
     }
 
+    private void saveToFile(String fileName,String content){
+        try {
+            File file = new File(fileName);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(content.getBytes(StandardCharsets.UTF_8),0,content.length());
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        }catch (Exception e){
+        }
+    }
+
     public <T> T call(String method, List<Object> params, Class<T> clazz) throws RpcException {
         RpcRequest rpcRequest = new RpcRequest(method, params);
 
@@ -52,6 +66,19 @@ public class RpcClient {
             }
 
             return (T) rpcResult.getResult();
+//            Response response = httpClient.newCall(request).execute();
+//
+//            if (method.equalsIgnoreCase("getBlock")){
+//                saveToFile(method,response.body().string());
+//            }
+//            return null;
+//            RpcResponse<T> rpcResult = resultAdapter.fromJson(response.body().string());
+//
+//            if (rpcResult.getError() != null) {
+//                throw new RpcException(rpcResult.getError().getMessage());
+//            }
+//
+//            return (T) rpcResult.getResult();
         } catch (IOException e) {
             throw new RpcException(e.getMessage());
         }
