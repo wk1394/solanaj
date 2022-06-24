@@ -34,15 +34,15 @@ public class RpcApi {
         return new BigInteger(String.valueOf(block.longValue()));
     }
 
-    public BlockChain getBlock() throws RpcException{
+    public BlockChain getBlock(Long block) throws RpcException{
         List<Object> params = new ArrayList<>();
-        params.add(138243491);
+        params.add(block);
         JSONObject encode = new JSONObject();
         encode.put("encoding","json");
         encode.put("transactionDetails","full");
         encode.put("rewards",false);
         params.add(encode);
-        BlockChain blockChain = client.call("getBlock",params, BlockChain.class);
+        BlockChain blockChain = client.callLog("getBlock",params, BlockChain.class);
         return blockChain;
     }
 
@@ -76,6 +76,15 @@ public class RpcApi {
 
         SubscriptionWebSocketClient subClient = SubscriptionWebSocketClient.getInstance(client.getEndpoint());
         subClient.signatureSubscribe(signature, listener);
+    }
+
+
+    public List<Integer> getBlockLimit(BigInteger blockCount,BigInteger limit) throws Throwable{
+        List<Object> params = new ArrayList<>();
+        params.add(blockCount.longValue());
+        params.add(limit.longValue());
+        Integer[] blockArray = client.call("getBlocksWithLimit",params,Integer[].class);
+        return Arrays.asList(blockArray);
     }
 
     public long getBalance(PublicKey account) throws RpcException {

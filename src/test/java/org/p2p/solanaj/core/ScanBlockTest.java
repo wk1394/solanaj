@@ -14,7 +14,7 @@ public class ScanBlockTest {
         try {
             // Get account Info
             final RpcClient client = new RpcClient(Cluster.MAINNET);
-            System.out.println("block height:"+client.getApi().getBlock());
+            System.out.println("block height:"+client.getApi().getBlock(138541876L));
         } catch (RpcException e) {
             e.printStackTrace();
         }
