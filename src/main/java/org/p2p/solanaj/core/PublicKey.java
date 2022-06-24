@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.bitcoinj.core.Base58;
 import org.bitcoinj.core.Sha256Hash;
+import org.bouncycastle.util.encoders.Hex;
 import org.p2p.solanaj.utils.ByteUtils;
 import org.p2p.solanaj.utils.TweetNaclFast;
 
@@ -117,6 +118,22 @@ public class PublicKey {
         }
 
         throw new Exception("Unable to find a viable program address nonce");
+    }
+
+    public static byte[] getKeyPairsFromPrivKey(String address,String privKey){
+        byte[] secret= Hex.decode(privKey);
+        PublicKey publicKey = new PublicKey(address);
+        byte[] pubkey = publicKey.toByteArray();
+
+        //私钥格式，私钥在前，公钥在后，合起来为64位。
+        byte[] secretkey = new byte[64];
+        for (int i = 0; i < 32; i++){
+            secretkey[i] = secret[i];
+        }
+        for (int i = 0; i < 32; i++){
+            secretkey[i+32] = pubkey[i];
+        }
+        return  secretkey;
     }
 
 }
